@@ -53,6 +53,12 @@ DatasetDescriptor >> addFieldsTo: aCSVReader [
 		do: [ :each | aCSVReader perform: ('add' , each value asString , 'Field')asSymbol ]
 ]
 
+{ #category : #splitjoin }
+DatasetDescriptor >> canJoin: anotherDescriptor [
+	^ (self columnNames asSet
+		intersection: anotherDescriptor columnNames asSet) isEmpty
+]
+
 { #category : #accessing }
 DatasetDescriptor >> columnNames [
 	^ columns collect: [ :each | each key ]
@@ -74,6 +80,11 @@ DatasetDescriptor >> indexOfColumn: aString [
 { #category : #initialization }
 DatasetDescriptor >> initialize [
 	columns := OrderedCollection new
+]
+
+{ #category : #splitjoin }
+DatasetDescriptor >> join: anotherDescriptor [
+	^self class fromAssociations: columns, anotherDescriptor columns
 ]
 
 { #category : #initialization }

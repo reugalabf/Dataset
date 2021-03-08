@@ -16,6 +16,11 @@ DatasetRow class >> on: anArray descriptor: aDescriptor [
 		yourself
 ]
 
+{ #category : #initialization }
+DatasetRow >> data [
+	^ data
+]
+
 { #category : #exporting }
 DatasetRow >> exportCSVOn: ws [
 	
@@ -27,6 +32,16 @@ DatasetRow >> exportCSVOn: ws [
 		nextPutAll: data last printString;
 		cr.
 	^ ws contents
+]
+
+{ #category : #accessing }
+DatasetRow >> join: anotherRow descriptor: anotherDescriptor [
+	| joinDatasetValues |
+	joinDatasetValues := OrderedCollection new.
+	1 to: data size do: [ :idx | joinDatasetValues addLast: data , anotherRow data ].
+	self class
+		on: joinDatasetValues asArray
+		descriptor: (descriptor join: anotherDescriptor)
 ]
 
 { #category : #initialization }

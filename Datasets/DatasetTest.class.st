@@ -2,7 +2,9 @@ Class {
 	#name : #DatasetTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'dataset'
+		'dataset',
+		'dataset2',
+		'dataset3'
 	],
 	#category : #'Datasets-Sources-Test'
 }
@@ -11,6 +13,18 @@ Class {
 DatasetTest >> datasetTest [
 	^ '123,05-08-1969,7890
 124,05-09-1969,7891'
+]
+
+{ #category : #running }
+DatasetTest >> datasetTest2 [
+	^ '123,05-08-1969,6543
+124,05-09-1969,4321'
+]
+
+{ #category : #running }
+DatasetTest >> datasetTest3 [
+	^ '123,,6543
+124,05-09-1969,'
 ]
 
 { #category : #running }
@@ -25,18 +39,49 @@ DatasetTest >> descriptorTest [
 ]
 
 { #category : #running }
+DatasetTest >> descriptorTest2 [
+	| descriptor |
+	descriptor := DatasetDescriptor new.
+	descriptor columns
+		add: 'dt2' -> #Integer;
+		add: 'timestamp2' -> #String;
+		add: 'timezone2' -> #Integer.
+	^ descriptor
+]
+
+{ #category : #running }
 DatasetTest >> setUp [
 	"Hooks that subclasses may override to define the fixture of test."
 
 	dataset := Dataset
 		on: self datasetTest readStream
-		descriptor: self descriptorTest
+		descriptor: self descriptorTest.
+	dataset2 := Dataset
+		on: self datasetTest2 readStream
+		descriptor: self descriptorTest2.
+	dataset3 := Dataset
+		on: self datasetTest3 readStream
+		descriptor: self descriptorTest2
 ]
 
 { #category : #tests }
 DatasetTest >> testDatasetInstanceCreation [
 	self assert: dataset columns size = 3.
 	self assert: dataset rows size = 2
+]
+
+{ #category : #tests }
+DatasetTest >> testDatasetInstanceCreationWithNullValues [
+	self assert: dataset3 columns size = 3.
+	self assert: dataset3 rows size = 2
+]
+
+{ #category : #tests }
+DatasetTest >> testJoin [
+	| joinDataset |
+	joinDataset := dataset join: dataset2.
+	self assert: joinDataset columns size = 6.
+	self assert: joinDataset rows size = 2
 ]
 
 { #category : #tests }
