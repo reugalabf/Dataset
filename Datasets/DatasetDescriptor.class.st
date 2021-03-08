@@ -60,6 +60,11 @@ DatasetDescriptor >> canJoin: anotherDescriptor [
 ]
 
 { #category : #accessing }
+DatasetDescriptor >> columnAt: index [
+	^ columns at: index
+]
+
+{ #category : #accessing }
 DatasetDescriptor >> columnNames [
 	^ columns collect: [ :each | each key ]
 ]

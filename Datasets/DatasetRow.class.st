@@ -11,8 +11,8 @@ Class {
 { #category : #'as yet unclassified' }
 DatasetRow class >> on: anArray descriptor: aDescriptor [
 	^ self new
-		setData: anArray;
-		setDescriptor: aDescriptor;
+		loadData: anArray 
+		withDescriptor: aDescriptor;
 		yourself
 ]
 
@@ -34,24 +34,32 @@ DatasetRow >> exportCSVOn: ws [
 	^ ws contents
 ]
 
+{ #category : #initialization }
+DatasetRow >> initialize [
+	super initialize.
+	data := OrderedCollection new
+]
+
 { #category : #accessing }
 DatasetRow >> join: anotherRow descriptor: anotherDescriptor [
-	| joinDatasetValues |
+	"| joinDatasetValues |
 	joinDatasetValues := OrderedCollection new.
 	1 to: data size do: [ :idx | joinDatasetValues addLast: data , anotherRow data ].
 	self class
 		on: joinDatasetValues asArray
+		descriptor: (descriptor join: anotherDescriptor)"
+		
+	^self class
+		on: (data , anotherRow data) 
 		descriptor: (descriptor join: anotherDescriptor)
 ]
 
-{ #category : #initialization }
-DatasetRow >> setData: anArray [
-	data := anArray
-]
-
-{ #category : #initialization }
-DatasetRow >> setDescriptor: aDescriptor [
-	descriptor := aDescriptor
+{ #category : #'as yet unclassified' }
+DatasetRow >> loadData: anArray withDescriptor: aDescriptor [
+	descriptor := aDescriptor.
+	1 to: anArray size do: [ :idx | 
+		data
+			addLast: (Datum value: (anArray at: idx) describedBy: (descriptor columnAt: idx)) ]
 ]
 
 { #category : #initialization }

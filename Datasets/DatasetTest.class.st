@@ -67,7 +67,8 @@ DatasetTest >> setUp [
 { #category : #tests }
 DatasetTest >> testDatasetInstanceCreation [
 	self assert: dataset columns size = 3.
-	self assert: dataset rows size = 2
+	self assert: dataset rows size = 2.
+	dataset inspect
 ]
 
 { #category : #tests }
@@ -79,9 +80,12 @@ DatasetTest >> testDatasetInstanceCreationWithNullValues [
 { #category : #tests }
 DatasetTest >> testJoin [
 	| joinDataset |
-	joinDataset := dataset join: dataset2.
+	joinDataset := dataset  join: dataset2.
 	self assert: joinDataset columns size = 6.
-	self assert: joinDataset rows size = 2
+
+	self assert: joinDataset rows size = 2.
+	self assert: joinDataset rows first data size = 6.
+	joinDataset inspect
 ]
 
 { #category : #tests }
