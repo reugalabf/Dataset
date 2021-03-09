@@ -23,6 +23,16 @@ Datum class >> value: anObject descriptor: datumDescriptor [
 		yourself
 ]
 
+{ #category : #exporting }
+Datum >> exportCSVOn: aWriteStream [
+	value printOn: aWriteStream
+]
+
+{ #category : #evaluating }
+Datum >> value [
+	^ value
+]
+
 { #category : #accessing }
 Datum >> value: anObject descriptor: datumDescriptor [
 	value := anObject.

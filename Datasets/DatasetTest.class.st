@@ -68,7 +68,10 @@ DatasetTest >> setUp [
 DatasetTest >> testDatasetInstanceCreation [
 	self assert: dataset columns size = 3.
 	self assert: dataset rows size = 2.
-	dataset inspect
+	self assert: (dataset exportCSV = 
+'123,''05-08-1969'',7890
+124,''05-09-1969'',7891
+')
 ]
 
 { #category : #tests }
@@ -79,13 +82,14 @@ DatasetTest >> testDatasetInstanceCreationWithNullValues [
 
 { #category : #tests }
 DatasetTest >> testJoin [
-	| joinDataset |
-	joinDataset := dataset  join: dataset2.
+	| joinDataset stream|
+	joinDataset := dataset  halt join: dataset2.
 	self assert: joinDataset columns size = 6.
 
 	self assert: joinDataset rows size = 2.
 	self assert: joinDataset rows first data size = 6.
-	joinDataset inspect
+	
+	joinDataset exportCSV inspect
 ]
 
 { #category : #tests }

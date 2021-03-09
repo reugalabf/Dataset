@@ -23,15 +23,10 @@ DatasetRow >> data [
 
 { #category : #exporting }
 DatasetRow >> exportCSVOn: ws [
-	
 	1 to: data size - 1 do: [ :idx | 
-		ws
-			nextPutAll: (data at: idx) printString;
-			nextPut: $, ].
-	ws
-		nextPutAll: data last printString;
-		cr.
-	^ ws contents
+		(data at: idx) exportCSVOn: ws.
+		ws nextPut: $, ].
+	data last exportCSVOn: ws
 ]
 
 { #category : #initialization }
@@ -59,7 +54,7 @@ DatasetRow >> loadData: anArray withDescriptor: aDescriptor [
 	descriptor := aDescriptor.
 	1 to: anArray size do: [ :idx | 
 		data
-			addLast: (Datum value: (anArray at: idx) describedBy: (descriptor columnAt: idx)) ]
+			addLast: (Datum  value: ((anArray at: idx) value) describedBy: (descriptor columnAt: idx)) ]
 ]
 
 { #category : #initialization }
