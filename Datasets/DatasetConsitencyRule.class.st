@@ -1,7 +1,7 @@
 Class {
 	#name : #DatasetConsitencyRule,
 	#superclass : #Object,
-	#category : #'Datasets-Sources'
+	#category : #'Datasets-Core'
 }
 
 { #category : #'as yet unclassified' }

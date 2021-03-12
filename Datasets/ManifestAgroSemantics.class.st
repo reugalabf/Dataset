@@ -24,5 +24,5 @@ ManifestAgroSemantics class >> ruleRBStringConcatenationRuleV1FalsePositive [
 
 { #category : #'code-critics' }
 ManifestAgroSemantics class >> ruleRBToDoRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#DatasetRow #join:descriptor: #false)) #'2020-05-29T10:40:37.386454-03:00') #(#(#RGMethodDefinition #(#DatasetRow #loadData:withDescriptor: #false)) #'2021-03-08T10:41:38.461754-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#DatasetRow #join:descriptor: #false)) #'2020-05-29T10:40:37.386454-03:00') #(#(#RGMethodDefinition #(#DatasetRow #initializeWithData:withDescriptor: #false)) #'2021-03-08T10:41:38.461754-03:00') )
 ]

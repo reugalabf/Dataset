@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'dataset'
 	],
-	#category : #'Datasets-Sources-Test'
+	#category : #'Datasets-Tests'
 }
 
 { #category : #running }

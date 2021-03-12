@@ -4,5 +4,5 @@ Class {
 	#instVars : [
 		'prevTemp'
 	],
-	#category : #'Datasets-Sources'
+	#category : #'Datasets-Core'
 }

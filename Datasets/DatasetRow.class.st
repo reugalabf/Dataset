@@ -5,13 +5,21 @@ Class {
 		'data',
 		'descriptor'
 	],
-	#category : #'Datasets-Sources'
+	#category : #'Datasets-Core'
 }
+
+{ #category : #'as yet unclassified' }
+DatasetRow class >> datumCollection: anArray descriptor: aDescriptor [
+	^ self new
+		setDatumCollection: anArray 
+		withDescriptor: aDescriptor;
+		yourself
+]
 
 { #category : #'as yet unclassified' }
 DatasetRow class >> on: anArray descriptor: aDescriptor [
 	^ self new
-		loadData: anArray 
+		initializeWithData: anArray 
 		withDescriptor: aDescriptor;
 		yourself
 ]
@@ -35,6 +43,13 @@ DatasetRow >> initialize [
 	data := OrderedCollection new
 ]
 
+{ #category : #'as yet unclassified' }
+DatasetRow >> initializeWithData: anArray withDescriptor: aDescriptor [
+	descriptor := aDescriptor.
+
+	1 to: anArray size do: [ :idx | data addLast: ((Datum value: (anArray at: idx) describedBy: (descriptor columnAt: idx)) ) ]
+]
+
 { #category : #accessing }
 DatasetRow >> join: anotherRow descriptor: anotherDescriptor [
 	"| joinDatasetValues |
@@ -45,16 +60,15 @@ DatasetRow >> join: anotherRow descriptor: anotherDescriptor [
 		descriptor: (descriptor join: anotherDescriptor)"
 		
 	^self class
-		on: (data , anotherRow data) 
+		datumCollection: (data , anotherRow data) 
 		descriptor: (descriptor join: anotherDescriptor)
 ]
 
 { #category : #'as yet unclassified' }
-DatasetRow >> loadData: anArray withDescriptor: aDescriptor [
+DatasetRow >> setDatumCollection: anArray withDescriptor: aDescriptor [
 	descriptor := aDescriptor.
-	1 to: anArray size do: [ :idx | 
-		data
-			addLast: (Datum  value: ((anArray at: idx) value) describedBy: (descriptor columnAt: idx)) ]
+
+	1 to: anArray size do: [ :idx | data addLast: (anArray at: idx) ]
 ]
 
 { #category : #initialization }

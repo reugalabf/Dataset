@@ -6,7 +6,7 @@ Class {
 		'dataset2',
 		'dataset3'
 	],
-	#category : #'Datasets-Sources-Test'
+	#category : #'Datasets-Tests'
 }
 
 { #category : #running }
@@ -82,14 +82,21 @@ DatasetTest >> testDatasetInstanceCreationWithNullValues [
 
 { #category : #tests }
 DatasetTest >> testJoin [
-	| joinDataset stream|
-	joinDataset := dataset  halt join: dataset2.
-	self assert: joinDataset columns size = 6.
-
-	self assert: joinDataset rows size = 2.
-	self assert: joinDataset rows first data size = 6.
-	
-	joinDataset exportCSV inspect
+	| joinDataset |
+	joinDataset := dataset join: dataset2.
+	self assert: joinDataset columns size equals: 6.
+	self assert: joinDataset rows size equals: 2.
+	self assert: joinDataset rows first data size equals: 6.
+	self
+		assert: joinDataset exportCSV
+		equals:
+			'123,''05-08-1969'',7890,123,''05-08-1969'',6543
+124,''05-09-1969'',7891,124,''05-09-1969'',4321
+'.
+	self
+		assert: (dataset rows first valueAt: (dataset descriptor columnAt: 1) key)
+		equals:
+			(joinDataset rows first valueAt: (dataset descriptor columnAt: 1) key)
 ]
 
 { #category : #tests }

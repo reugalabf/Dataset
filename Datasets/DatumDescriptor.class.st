@@ -5,7 +5,7 @@ Class {
 		'name',
 		'type'
 	],
-	#category : #'Datasets-Datum'
+	#category : #'Datasets-Core'
 }
 
 { #category : #'instance creation' }

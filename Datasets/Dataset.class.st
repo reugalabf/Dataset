@@ -5,7 +5,7 @@ Class {
 		'rows',
 		'descriptor'
 	],
-	#category : #'Datasets-Sources'
+	#category : #'Datasets-Core'
 }
 
 { #category : #'instance creation' }

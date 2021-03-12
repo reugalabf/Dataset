@@ -5,7 +5,7 @@ Class {
 		'value',
 		'descriptor'
 	],
-	#category : #'Datasets-Datum'
+	#category : #'Datasets-Core'
 }
 
 { #category : #'as yet unclassified' }

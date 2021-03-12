@@ -1,7 +1,7 @@
 Class {
 	#name : #DatasetDescriptorTest,
 	#superclass : #TestCase,
-	#category : #'Datasets-Sources-Test'
+	#category : #'Datasets-Tests'
 }
 
 { #category : #running }

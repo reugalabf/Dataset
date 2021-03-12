@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'columns'
 	],
-	#category : #'Datasets-Sources'
+	#category : #'Datasets-Core'
 }
 
 { #category : #'as yet unclassified' }
