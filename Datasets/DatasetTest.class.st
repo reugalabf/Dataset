@@ -43,7 +43,7 @@ DatasetTest >> descriptorTest2 [
 	| descriptor |
 	descriptor := DatasetDescriptor new.
 	descriptor columns
-		add: 'dt2' -> #Integer;
+		add: 'dt' -> #Integer;
 		add: 'timestamp2' -> #String;
 		add: 'timezone2' -> #Integer.
 	^ descriptor

@@ -23,6 +23,11 @@ Datum class >> value: anObject descriptor: datumDescriptor [
 		yourself
 ]
 
+{ #category : #'as yet unclassified' }
+Datum >> equalValue: anObject [
+	^ value = anObject value
+]
+
 { #category : #exporting }
 Datum >> exportCSVOn: aWriteStream [
 	value printOn: aWriteStream

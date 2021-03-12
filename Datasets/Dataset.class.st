@@ -76,18 +76,25 @@ Dataset >> initialize [
 
 { #category : #converting }
 Dataset >> join: anotherDataset [
-	| joinDataset joinDescriptor |
-	(self canJoin: anotherDataset)
-		ifFalse: [ self error: 'Datasets are not of the same size' ].
-	joinDescriptor := descriptor join: anotherDataset descriptor.
-	joinDataset := self class emptyWithDescriptor: joinDescriptor.
-	1 to: rows size do: [ :idx | 
-		joinDataset
-			addRow:
-				((rows at: idx)
-					join: (anotherDataset rows at: idx)
-					descriptor: joinDescriptor) ].
-	^ joinDataset
+	self
+		join: anotherDataset
+		matchBlock: [ :myRow :otherRow | 
+			(myRow valueAt: (self descriptor columnAt: 1)key )
+				equalValue: (otherRow valueAt: (anotherDataset descriptor columnAt: 1)key) ]
+]
+
+{ #category : #converting }
+Dataset >> join: anotherDataset matchBlock: aBlock [
+	"123,4 		122,A
+122,5   		123,B"
+
+	rows
+		do: [ :sourceRow | 
+			| matches |
+			matches := anotherDataset
+				rowsMatching: [ :targetRow | aBlock value: sourceRow value: targetRow ].
+			matches notEmpty
+				ifTrue: [ matches inspect ] ]
 ]
 
 { #category : #initialization }
@@ -107,9 +114,30 @@ Dataset >> numberOfRows [
 	^ rows size
 ]
 
+{ #category : #converting }
+Dataset >> rightPaste: anotherDataset [ 
+	| joinDataset joinDescriptor |
+	(self canJoin: anotherDataset)
+		ifFalse: [ self error: 'Datasets are not of the same size' ].
+	joinDescriptor := descriptor join: anotherDataset descriptor.
+	joinDataset := self class emptyWithDescriptor: joinDescriptor.
+	1 to: rows size do: [ :idx | 
+		joinDataset
+			addRow:
+				((rows at: idx)
+					join: (anotherDataset rows at: idx)
+					descriptor: joinDescriptor) ].
+	^ joinDataset
+]
+
 { #category : #accessing }
 Dataset >> rows [
 	^ rows
+]
+
+{ #category : #converting }
+Dataset >> rowsMatching: aBlock [
+	^ rows select: aBlock
 ]
 
 { #category : #initialization }

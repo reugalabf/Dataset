@@ -26,7 +26,7 @@ DataMapping >> asWeightedAverageMap [
 	| dict |
 	dict := Dictionary new.
 	map
-		keysAndValuesDo: [ :key :value | dict at: key put: (self weightedAverageFrom: value) ].
+		keysAndValuesDo: [ :key :datum | dict at: key put: (self halt weightedAverageFrom: datum) ].
 	^ self class new
 		setMap: dict;
 		yourself
@@ -41,9 +41,9 @@ DataMapping >> from: dataset keyColumn: aString valueColumn: anotherString round
 		do: [ :each | 
 			(each valueAt: anotherString)
 				ifNotNil: [ map
-						at: (self normalizedTemp: (each valueAt: aString) resolution: anInteger)
-						ifPresent: [ :value | value add: (each valueAt: anotherString) asNumber ]
-						ifAbsentPut: (SortedCollection with: (each valueAt: anotherString) asNumber) ] ]
+						at: (self normalized: (each valueAt: aString) resolution: anInteger)
+						ifPresent: [ :value | value add: (each valueAt: anotherString) value asNumber ]
+						ifAbsentPut: (SortedCollection with: (each valueAt: anotherString) value asNumber) ] ]
 ]
 
 { #category : #accessing }
@@ -52,8 +52,8 @@ DataMapping >> map [
 ]
 
 { #category : #'instance creation' }
-DataMapping >> normalizedTemp: aString resolution: resolution [
-	^ aString asNumber truncateTo: resolution 
+DataMapping >> normalized: datum resolution: resolution [
+	^ datum value asNumber truncateTo: resolution 
 ]
 
 { #category : #accessing }

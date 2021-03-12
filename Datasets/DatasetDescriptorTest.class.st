@@ -20,6 +20,15 @@ DatasetDescriptorTest >> testSubDescritor [
 	self
 		assert:
 			(self descriptorTest
-				subDatasetDescriptorWithColumns: (Array with: 'dt'))  size
+				subDatasetDescriptorWithColumns: (Array with: 'dt')) columns  size
 				= 1
+]
+
+{ #category : #tests }
+DatasetDescriptorTest >> testTwoSubDescritor [
+	self
+		assert:
+			(self descriptorTest
+				subDatasetDescriptorWithColumns: (Array with: 'dt' with:'timezone')) columns  size
+				= 2
 ]
