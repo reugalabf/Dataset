@@ -45,7 +45,7 @@ Dataset >> canJoin: anotherDataset [
 Dataset >> checkConsistencyOn: columnName rule: aDatasetRule [
 	^ self rows
 		reject:
-			[ :each | aDatasetRule checkConsitencyFor: (each valueAt: columnName) ]
+			[ :each | aDatasetRule checkConsitencyFor: (each valueAtName: columnName) ]
 ]
 
 { #category : #accessing }
@@ -76,25 +76,39 @@ Dataset >> initialize [
 
 { #category : #converting }
 Dataset >> join: anotherDataset [
-	self
+	^ self
 		join: anotherDataset
 		matchBlock: [ :myRow :otherRow | 
-			(myRow valueAt: (self descriptor columnAt: 1)key )
-				equalValue: (otherRow valueAt: (anotherDataset descriptor columnAt: 1)key) ]
+			(myRow valueAtName: (self descriptor columnAt: 1) key)
+				equalValue: (otherRow valueAtName: (anotherDataset descriptor columnAt: 1) key) ]
 ]
 
 { #category : #converting }
 Dataset >> join: anotherDataset matchBlock: aBlock [
-	"123,4 		122,A
-122,5   		123,B"
-
+	| joinDataset |
+	joinDataset := Dataset
+		emptyWithDescriptor: (self descriptor join: anotherDataset descriptor).
 	rows
 		do: [ :sourceRow | 
 			| matches |
 			matches := anotherDataset
-				rowsMatching: [ :targetRow | aBlock value: sourceRow value: targetRow ].
-			matches notEmpty
-				ifTrue: [ matches inspect ] ]
+				rowsMatching: [ :targetRow | aBlock value: sourceRow value: targetRow ]
+				do: [ :matchingRow | joinDataset  addRow: (sourceRow join: matchingRow) ] ].
+	^ joinDataset
+]
+
+{ #category : #converting }
+Dataset >> join: anotherDataset matchColumns: anArray [
+	^ self
+		join: anotherDataset
+		matchBlock: [ :sourceRow :targetRow | 
+			| bool |
+			bool := true.
+			1 to: anArray size do: [ :idx | 
+				bool := bool
+					and: [ (sourceRow valueAtIndex: (anArray at: idx))
+							equalValue: (targetRow valueAtIndex: (anArray at: idx)) ] ].
+			bool ]
 ]
 
 { #category : #initialization }
@@ -138,6 +152,14 @@ Dataset >> rows [
 { #category : #converting }
 Dataset >> rowsMatching: aBlock [
 	^ rows select: aBlock
+]
+
+{ #category : #converting }
+Dataset >> rowsMatching: aBlock do: anotherBlock [
+	rows
+		do: [ :each | 
+			(aBlock value: each)
+				ifTrue: [ anotherBlock value: each ] ]
 ]
 
 { #category : #initialization }

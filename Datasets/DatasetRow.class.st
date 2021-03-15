@@ -29,6 +29,11 @@ DatasetRow >> data [
 	^ data
 ]
 
+{ #category : #accessing }
+DatasetRow >> descriptor [
+	^ descriptor
+]
+
 { #category : #exporting }
 DatasetRow >> exportCSVOn: ws [
 	1 to: data size - 1 do: [ :idx | 
@@ -48,6 +53,11 @@ DatasetRow >> initializeWithData: anArray withDescriptor: aDescriptor [
 	descriptor := aDescriptor.
 
 	1 to: anArray size do: [ :idx | data addLast: ((Datum value: (anArray at: idx) describedBy: (descriptor columnAt: idx)) ) ]
+]
+
+{ #category : #splitjoin }
+DatasetRow >> join: anotherRow [
+	^self join: anotherRow descriptor: anotherRow descriptor
 ]
 
 { #category : #accessing }
@@ -79,7 +89,12 @@ DatasetRow >> subDatasetRowWithDescriptor: subDescriptor [
 	self class on: subDatasetValues descriptor: subDescriptor
 ]
 
+{ #category : #'as yet unclassified' }
+DatasetRow >> valueAtIndex: aNumber [
+	^ data at: aNumber
+]
+
 { #category : #accessing }
-DatasetRow >> valueAt: aString [
+DatasetRow >> valueAtName: aString [
 	^ data at: (descriptor indexOfColumn: aString)
 ]
